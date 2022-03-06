@@ -76,6 +76,8 @@ func RRtoRC(rr dns.RR, origin string) (RecordConfig, error) {
 		err = rc.SetTarget(v.Target)
 	case *dns.DS:
 		err = rc.SetTargetDS(v.KeyTag, v.Algorithm, v.DigestType, v.Digest)
+	case *dns.DNSKEY:
+		err = rc.SetTargetDNSKEY(v.Flags, v.Protocol, v.Algorithm, v.PublicKey)
 	case *dns.MX:
 		err = rc.SetTargetMX(v.Preference, v.Mx)
 	case *dns.NS:

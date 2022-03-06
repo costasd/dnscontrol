@@ -96,6 +96,10 @@ type RecordConfig struct {
 	DsAlgorithm      uint8             `json:"dsalgorithm,omitempty"`
 	DsDigestType     uint8             `json:"dsdigesttype,omitempty"`
 	DsDigest         string            `json:"dsdigest,omitempty"`
+	DnskeyFlags      uint16		   `json:"dnskeyflags,omitempty"`
+	DnskeyProtocol   uint8		   `json:"dnskeyprotocol,omitempty"`
+	DnskeyAlgorithm  uint8             `json:"dnskeyalgorithm,omitempty"`
+	DnskeyPublicKey  string            `json:"dnskeypublickey,omitempty"`
 	NaptrOrder       uint16            `json:"naptrorder,omitempty"`
 	NaptrPreference  uint16            `json:"naptrpreference,omitempty"`
 	NaptrFlags       string            `json:"naptrflags,omitempty"`
@@ -352,6 +356,11 @@ func (rc *RecordConfig) ToRR() dns.RR {
 		rr.(*dns.DS).DigestType = rc.DsDigestType
 		rr.(*dns.DS).Digest = rc.DsDigest
 		rr.(*dns.DS).KeyTag = rc.DsKeyTag
+	case dns.TypeDNSKEY:
+		rr.(*dns.DNSKEY).Flags = rc.DnskeyFlags
+		rr.(*dns.DNSKEY).Protocol = rc.DnskeyProtocol
+		rr.(*dns.DNSKEY).Algorithm = rc.DnskeyAlgorithm
+		rr.(*dns.DNSKEY).PublicKey = rc.DnskeyPublicKey
 	case dns.TypePTR:
 		rr.(*dns.PTR).Ptr = rc.GetTargetField()
 	case dns.TypeNAPTR:
@@ -511,7 +520,7 @@ func downcase(recs []*RecordConfig) {
 		r.Name = strings.ToLower(r.Name)
 		r.NameFQDN = strings.ToLower(r.NameFQDN)
 		switch r.Type { // #rtype_variations
-		case "ANAME", "CNAME", "DS", "MX", "NS", "PTR", "NAPTR", "SRV", "TLSA", "AKAMAICDN":
+		case "ANAME", "CNAME", "DS", "DNSKEY", "MX", "NS", "PTR", "NAPTR", "SRV", "TLSA", "AKAMAICDN":
 			// These record types have a target that is case insensitive, so we downcase it.
 			r.target = strings.ToLower(r.target)
 		case "A", "AAAA", "ALIAS", "CAA", "IMPORT_TRANSFORM", "TXT", "SSHFP", "CF_REDIRECT", "CF_TEMP_REDIRECT", "CF_WORKER_ROUTE":

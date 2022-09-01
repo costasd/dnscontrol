@@ -13,7 +13,7 @@ require (
 	github.com/TomOnTime/utfutil v0.0.0-20210710122150-437f72b26edf
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.1
 	github.com/andreyvit/diff v0.0.0-20170406064948-c7f18ee00883
-	github.com/aws/aws-sdk-go-v2 v1.16.11
+	github.com/aws/aws-sdk-go-v2 v1.16.13
 	github.com/aws/aws-sdk-go-v2/config v1.17.1
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.14
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.21.7
@@ -101,7 +101,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.13 // indirect
-	github.com/aws/smithy-go v1.12.1 // indirect
+	github.com/aws/smithy-go v1.13.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bflad/gopaniccheck v0.1.0 // indirect
 	github.com/bflad/tfproviderlint v0.28.1 // indirect

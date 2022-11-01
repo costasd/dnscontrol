@@ -48,7 +48,7 @@ require (
 	github.com/robertkrimen/otto v0.0.0-20211024170158-b87d35c0b86f
 	github.com/softlayer/softlayer-go v1.0.6
 	github.com/stretchr/testify v1.8.0
-	github.com/tdewolff/minify/v2 v2.12.0
+	github.com/tdewolff/minify/v2 v2.12.4
 	github.com/transip/gotransip/v6 v6.17.0
 	github.com/urfave/cli/v2 v2.11.2
 	github.com/vultr/govultr v1.1.1
@@ -291,7 +291,7 @@ require (
 	github.com/subosito/gotenv v1.4.0 // indirect
 	github.com/sylvia7788/contextcheck v1.0.4 // indirect
 	github.com/tdakkota/asciicheck v0.1.1 // indirect
-	github.com/tdewolff/parse/v2 v2.6.1 // indirect
+	github.com/tdewolff/parse/v2 v2.6.4 // indirect
 	github.com/tetafro/godot v1.4.11 // indirect
 	github.com/timakin/bodyclose v0.0.0-20210704033933-f49887972144 // indirect
 	github.com/tomarrell/wrapcheck/v2 v2.6.2 // indirect

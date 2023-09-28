@@ -992,7 +992,7 @@ function recordBuilder(type, opts) {
                     }
                     _.extend(record.meta, mod);
                 } else {
-                    throw 'ERROR: Unknown modifier type';
+                    throw 'ERROR: Unknown modifier type: '+ typeof(mod);
                 }
             }
         },
@@ -1217,6 +1217,18 @@ var URL = recordBuilder('URL');
 var URL301 = recordBuilder('URL301');
 var FRAME = recordBuilder('FRAME');
 var NS1_URLFWD = recordBuilder('NS1_URLFWD');
+var INWX_REDIRECT = recordBuilder('INWX_REDIRECT', {
+    args: [
+        ['name', _.isString],
+        ['value', _.isString],
+		['appendUrl', _.isBoolean],
+		['redirectType', _.isString],
+    ],
+    transform: function (record, args, modifiers) {
+        record.name = args.name;
+        record.target = [args.value, args.appendUrl, args.redirectType].join("|");
+    },
+});
 var CLOUDNS_WR = recordBuilder('CLOUDNS_WR');
 
 // LOC_BUILDER_DD takes an object:

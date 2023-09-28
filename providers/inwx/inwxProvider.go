@@ -74,6 +74,7 @@ func init() {
 		RecordAuditor: AuditRecords,
 	}
 	providers.RegisterDomainServiceProviderType("INWX", fns, features)
+	providers.RegisterCustomRecordType("INWX_REDIRECT", "INWX", "") //XXX: check third arg?
 }
 
 // getOTP either returns the TOTPValue or uses TOTPKey and the current time to generate a valid TOTPValue.
@@ -186,6 +187,40 @@ func makeNameserverRecordRequest(domain string, rec *models.RecordConfig) *goinw
 	case "SRV":
 		req.Priority = int(rec.SrvPriority)
 		req.Content = fmt.Sprintf("%d %d %v", rec.SrvWeight, rec.SrvPort, content[:len(content)-1])
+	case "INWX_REDIRECT":
+		fmt.Println("huhu - I'm in makeNameserverRecordRequest")
+		fmt.Println(rec)
+		req.Type = "URL"
+		t := strings.Split(rec.GetTargetField(), "|")
+
+		req.Content = t[0]
+		// INWX adds http:// to bare fqdns. Let's do it ourselves to remove
+		// some surprises XXX: might be better to have some type check here
+		if !strings.HasPrefix(t[0], "http") {
+			req.Content = "http://"+t[0]
+		}
+
+		if len(t) > 2 { // target + urlAppend + urlRedirectType
+			//urlAppend?
+			req.URLRedirectType = t[2]
+		}
+		if len(t) > 3 {// Title also set
+			req.URLRedirectTitle = t[3]
+		}
+		if len(t) > 4 { // Description also set
+			req.URLRedirectDescription = t[4]
+		}
+		if len(t) > 5 { // FavIcon also set
+			req.URLRedirectFavIcon = t[5]
+		}
+		if len(t) > 6 { // Keywords also set
+			req.URLRedirectKeywords = t[6]
+		}
+		// XXX ADD more checking in commands/types/dnscontrol.d.ts
+		// Only FRAME allows the rest of the stuff
+		// INWX_REDIRECT("koko", "lala.com", "0", "302"...)
+		// INWX_REDIRECT("koko", "lala.com", "0", "301"...)
+		// INWX_REDIRECT("koko", "lala.com", "0", "FRAME", "Title", "Description", "Favicon", "Keywords"...)
 	default:
 		req.Content = rec.GetTargetCombined()
 	}
@@ -330,6 +365,28 @@ func (api *inwxAPI) GetZoneRecords(domain string, meta map[string]string) (model
 			err = rc.SetTargetMX(uint16(record.Priority), record.Content)
 		case "SRV":
 			err = rc.SetTargetSRVPriorityString(uint16(record.Priority), record.Content)
+		case "URL":
+			// marshal in
+
+			t := []string{
+				record.Content,
+				record.URLRedirectType,
+			}
+			if record.URLRedirectTitle != "" {
+				t = append(t, record.URLRedirectTitle)
+			}
+			if record.URLRedirectDescription != "" {
+				t = append(t, record.URLRedirectDescription)
+			}
+			if record.URLRedirectFavIcon != "" {
+				t = append(t, record.URLRedirectFavIcon)
+			}
+			if record.URLRedirectKeywords != "" {
+				t = append(t, record.URLRedirectKeywords)
+			}
+
+			rc.Type = "INWX_REDIRECT"
+			err = rc.SetTarget(strings.Join(t, "|"))
 		default:
 			err = rc.PopulateFromString(rType, record.Content, domain)
 		}

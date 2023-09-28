@@ -221,7 +221,7 @@ func checkTargets(rec *models.RecordConfig, domain string) (errs []error) {
 		}
 	case "SRV":
 		check(checkTarget(target))
-	case "TXT", "IMPORT_TRANSFORM", "CAA", "SSHFP", "TLSA", "DS":
+	case "TXT", "IMPORT_TRANSFORM", "CAA", "SSHFP", "TLSA", "DS", "INWX_REDIRECT":
 	default:
 		if rec.Metadata["orig_custom_type"] != "" {
 			// it is a valid custom type. We perform no validation on target

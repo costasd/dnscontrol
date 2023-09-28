@@ -1415,6 +1415,13 @@ declare function INCLUDE(domain: string): DomainModifier;
 declare function IP(ip: string): number;
 
 /**
+ *
+ *
+**/
+declare function INWX_REDIRECT(name: string, value: string, appendUrl: boolean, redirectType: string, redirectTitle?: string, redirectDescription?: string, redirectFavico?: string, redirectKeywords?: string, ...modifiers: RecordModifier[]): DomainModifier;
+//declare function INWX_REDIRECT(name: string, value: string, appendUrl: boolean, redirectType: "301" | "302" | "FRAME", redirectTitle?: string, redirectDescription?: string, redirectFavico?: string, redirectKeywords?: string, ...modifiers: RecordModifier[]): DomainModifier;
+
+/**
  * The parameter number types are as follows:
  *
  * ```
